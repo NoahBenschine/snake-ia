@@ -18,6 +18,10 @@ hello_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((350, 275)
                                          manager=manager)
 
 clock = pygame.time.Clock()
+POS_X = 0
+POS_Y = 0
+count = 0
+
 is_running = True
 
 while is_running:
@@ -28,7 +32,14 @@ while is_running:
 
      if event.type == pygame_gui.UI_BUTTON_PRESSED:
           if event.ui_element == hello_button:
-              print('Hello World!')
+
+
+              while count < 10:
+                       pygame.draw.rect(background,pygame.Color("#FFFFFF"),pygame.Rect((POS_X,POS_Y),(200,75)))
+                       # print(count)
+                       count+=1
+                       POS_Y+=80
+
 
      manager.process_events(event)
 
@@ -38,4 +49,4 @@ while is_running:
  manager.draw_ui(window_surface)
 
 
-    pygame.display.update()
+ pygame.display.update()

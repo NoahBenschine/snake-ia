@@ -47,7 +47,7 @@ def getTagID(tag):
     connection.commit()
     connection.close()
 
-def insertScore(tagId,score):
+def insertScore(score,tagId):
     connection = psycopg2.connect(database="d26bvkku1b2c1m", user = "lxfeqgaardprbv", password = db_pass, host = "ec2-52-54-38-229.compute-1.amazonaws.com", port = "5432")
     cursor = connection.cursor()
     cursor.execute("INSERT INTO scores(value,tagID) VALUES(%s,%s)",[score,tagId])
