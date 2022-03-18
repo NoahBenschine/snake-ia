@@ -8,7 +8,6 @@ import sys
 sys.path.append('src')
 
 # importing required module
-import DB_Calls
 
 from os.path import join, dirname
 from dotenv import load_dotenv
@@ -46,7 +45,13 @@ def getTagID(tag):
     cursor.close()
     connection.commit()
     connection.close()
-
+def get_tag(tag_id):
+    connection = psycopg2.connect(database="d26bvkku1b2c1m", user = "lxfeqgaardprbv", password = db_pass, host = "ec2-52-54-38-229.compute-1.amazonaws.com", port = "5432")
+    cursor = connection.cursor()
+    cursor.execute("SELECT name FROM tags WHERE id=%s",[tag_id])
+    scores = cursor.fetchall()
+    return scores
+    cursor.close()
 def insertScore(score,tagId):
     connection = psycopg2.connect(database="d26bvkku1b2c1m", user = "lxfeqgaardprbv", password = db_pass, host = "ec2-52-54-38-229.compute-1.amazonaws.com", port = "5432")
     cursor = connection.cursor()

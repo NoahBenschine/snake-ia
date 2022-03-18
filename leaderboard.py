@@ -14,7 +14,8 @@ white = pygame.Color(255, 255, 255)
 red = pygame.Color(255, 0, 0)
 green = pygame.Color(0, 255, 0)
 blue = pygame.Color(0, 0, 255)
-
+def game_start(func):
+    func()
 def start_leaderboard(score,leaderboard_surface,new_game):
     leaderboard_surface.fill('#000000')
     manager = pygame_gui.UIManager((800, 600))
@@ -85,6 +86,7 @@ def start_leaderboard(score,leaderboard_surface,new_game):
                   topten = DB.getScores()
                   print(topten)
                   print(topten[0][1])
+                  print(DB.get_tag(topten[count][2]))
 
                   tagInput = False
                   new_rect = pygame.Rect((350, 50), (50, 50))
@@ -93,9 +95,11 @@ def start_leaderboard(score,leaderboard_surface,new_game):
                   start_new_game.set_position((450,70))
                   check_leaderboard.set_text("Input Score")
                   leaderboard_surface.fill('#000000') # Fill the entire screen with black
+
                   while count < 10:
+                      tag = str(DB.get_tag(topten[count][2]))[3:-4]
                       if len(topten)-1 >= count:
-                          text_surface = base_font.render("#"+str(count+1)+"  "+str(topten[count][1]), True, ('#000000'))
+                          text_surface = base_font.render("#"+str(count+1)+" "+tag+"    "+str(topten[count][1]), True, ('#000000'))
                       else:text_surface = base_font.render("No score", True, ('#000000'))
 
                       score_rect = pygame.Rect((300,POS_Y),(250,25))
@@ -108,10 +112,13 @@ def start_leaderboard(score,leaderboard_surface,new_game):
                     tagInput = True
                     leaderboard_surface.fill('#000000') # Fill the entire screen with black
                     check_leaderboard.set_position((300,100))
+                    check_leaderboard.set_text("Leaderboard")
                     pygame.draw.rect(leaderboard_surface,pygame.Color("#FFFFFF"),leaderboard_container)
               if event.ui_element == start_new_game:
                   leaderboard_surface.fill('#000000')
-                  new_game()
+                  game_start(new_game)
+
+
 
 
 
@@ -131,6 +138,7 @@ def start_leaderboard(score,leaderboard_surface,new_game):
                  # get text input from 0 to -1 i.e. end.
                  user_text = user_text[:-1]
              elif event.key == pygame.K_KP_ENTER or event.key == pygame.K_RETURN:
+                 print(user_text)
                  DB.insertTag(user_text)
                  tag_id = DB.getTagID(user_text)
                  DB.insertScore(score,tag_id)
